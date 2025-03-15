@@ -70,29 +70,33 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
           Manifest.permission.ACCESS_FINE_LOCATION
   };
 
-  public static void registerWith(Registrar registrar) {
-    final BluetoothPrintPlugin instance = new BluetoothPrintPlugin();
 
-    Activity activity = registrar.activity();
-    Application application = null;
-    if (registrar.context() != null) {
-      application = (Application) (registrar.context().getApplicationContext());
-    }
-    instance.setup(registrar.messenger(), application, activity, registrar, null);
-  }
+  // public static void registerWith(Registrar registrar) {
+  //   final BluetoothPrintPlugin instance = new BluetoothPrintPlugin();
+
+  //   Activity activity = registrar.activity();
+  //   Application application = null;
+  //   if (registrar.context() != null) {
+  //     application = (Application) (registrar.context().getApplicationContext());
+  //   }
+  //   instance.setup(registrar.messenger(), application, activity, registrar, null);
+  // }
 
   public BluetoothPrintPlugin(){
   }
 
 
   @Override
-  public void onAttachedToEngine(FlutterPluginBinding binding) {
-    pluginBinding = binding;
+  public void onAttachedToEngine(FlutterPluginBinding flutterPluginBinding) {
+    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "bluetooth_print");
+    channel.setMethodCallHandler(this);
+    // flutterPluginBinding = binding;
   }
 
   @Override
   public void onDetachedFromEngine(FlutterPluginBinding binding) {
-    pluginBinding = null;
+    // pluginBinding = null;
+    channel.setMethodCallHandler(null);
   }
 
   @Override
